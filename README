@@ -1,0 +1,43 @@
+tagfs-utils - utilities for tagfs
+
+1) Introduction
+2) Requirements
+3) Installation
+4) Tests
+5) Contact
+
+---------------------------------------------------------------------
+Introduction
+
+TODO
+
+---------------------------------------------------------------------
+Requirements
+
+* python 2.5, 2.6
+
+---------------------------------------------------------------------
+Installation
+
+To install tagfs utils into your home directory type the following:
+
+$ python setup.py install --home ~/.local
+
+If you haven't already extended your local python path then add the following
+to your environment configuration script. For example to your .bashrc:
+
+export PYTHONPATH=~/.local/lib/python:$PYTHONPATH
+
+---------------------------------------------------------------------
+Tests
+
+You can execute the test cases via the setup.py script in the project's root
+directory.
+
+$ python setup.py test
+
+---------------------------------------------------------------------
+Contact
+
+* http://wiki.github.com/marook/tagfs
+* Markus Pielmeier <markus.pielmeier@gmx.de>
