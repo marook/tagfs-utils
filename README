@@ -3,8 +3,10 @@ tagfs-utils - utilities for tagfs
 1) Introduction
 2) Requirements
 3) Installation
-4) Tests
-5) Contact
+4) Usage
+4.1) tag
+5) Tests
+6) Contact
 
 ---------------------------------------------------------------------
 Introduction
@@ -27,6 +29,18 @@ If you haven't already extended your local python path then add the following
 to your environment configuration script. For example to your .bashrc:
 
 export PYTHONPATH=~/.local/lib/python:$PYTHONPATH
+
+---------------------------------------------------------------------
+Usage
+
+This section describes the tagfs utils applications.
+
+---------------------------------------------------------------------
+Usage - tag
+
+The tag application is used to view and manage taggings.
+
+TODO
 
 ---------------------------------------------------------------------
 Tests
