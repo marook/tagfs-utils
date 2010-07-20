@@ -18,13 +18,30 @@
 # along with tagfs utils.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import tag_utils.tag_io
+from tag_utils import tag_io
 import unittest
 
-class TestItem(unittest.TestCase):
+class TestParseLine(unittest.TestCase):
+    
+    def testParseComment(self):
+        e = tag_io.parseLine('   ')
+
+        print e
+
+    def testParseTagging(self):
+        e = tag_io.parseLine('tag')
+
+        print e
+
+    def testParseContextTagging(self):
+        e = tag_io.parseLine('context: tag')
+
+        print e
+
+class TestParseFile(unittest.TestCase):
 
     def testParse(self):
-        i = tag_utils.tag_io.parseFile('etc/test/tag1')
+        i = tag_io.parseFile('etc/test/tag1')
 
         print i
 

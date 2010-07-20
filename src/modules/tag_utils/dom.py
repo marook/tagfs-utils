@@ -50,3 +50,14 @@ class Item(object):
 
     def appendTagging(self, t):
         pass
+
+    def __str__(self):
+        s = '['
+
+        for e in self.entries:
+            s = s + e + '|'
+
+        s = s + ']'
+
+        return s
+        
