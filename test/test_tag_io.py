@@ -18,37 +18,15 @@
 # along with tagfs utils.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import tag_utils.tag_io
 import unittest
 
 class TestItem(unittest.TestCase):
 
     def testParse(self):
-        tag.Item(fileName)
-        pass
+        i = tag_utils.tag_io.parseFile('etc/test/tag1')
 
-class AbstractSubjectTest(unittest.TestCase):
-
-    def validateSubject(self, s):
-        c = s.connection
-
-        data = c.read()
-
-        c.close()
-
-        self.assertTrue(len(data) > 0)
-        
-
-class TestFileSubject(AbstractSubjectTest):
-
-    def testReadData(self):
-        """Tries to read data from a FileSubject
-        """
-
-        s = dom.FileSubject('src/brainfs')
-
-        self.validateSubject(s)
-
-        self.assertEqual('brainfs', s.name)
+        print i
 
 if __name__ == "__main__":
     unittest.main()
