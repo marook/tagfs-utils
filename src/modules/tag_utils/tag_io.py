@@ -32,7 +32,7 @@ def parseLine(line):
             context = None
             value = line.strip()
         else:
-            context = line[0:i - 1].strip()
+            context = line[0:i].strip()
             value = line[i + 1:len(line)].strip()
 
         entry = dom.Tagging(context, value)

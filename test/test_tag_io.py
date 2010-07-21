@@ -24,26 +24,47 @@ import unittest
 class TestParseLine(unittest.TestCase):
     
     def testParseComment(self):
-        e = tag_io.parseLine('   ')
+        """Parses an empty string comment
+        """
 
-        print e
+        s = '   '
+
+        e = tag_io.parseLine(s)
+
+        self.assertEqual(s, e.line)
 
     def testParseTagging(self):
+        """Parses a tagging without context
+        """
+
         e = tag_io.parseLine('tag')
 
-        print e
+        self.assertEqual(None, e.context)
+        self.assertEqual('tag', e.value)
+        self.assertEqual('tag', e.line)
 
     def testParseContextTagging(self):
+        """Parses a tagging with context
+        """
+
         e = tag_io.parseLine('context: tag')
 
-        print e
+        self.assertEqual('context', e.context)
+        self.assertEqual('tag', e.value)
+        self.assertEqual('context: tag', e.line)
 
 class TestParseFile(unittest.TestCase):
 
     def testParse(self):
-        i = tag_io.parseFile('etc/test/tag1')
+        """Parses entries from a tag file
+        """
 
-        print i
+        fileName = 'etc/test/tag1'
+
+        i = tag_io.parseFile(fileName)
+
+        self.assertEqual(6, len(i.entries))
+        self.assertEqual(fileName, i.itemFileName)
 
 if __name__ == "__main__":
     unittest.main()

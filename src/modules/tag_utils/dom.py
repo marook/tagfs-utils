@@ -17,12 +17,17 @@
 # along with tagfs utils.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class Comment(object):
+class Entry(object):
+
+    def __str__(self):
+        return self.line
+
+class Comment(Entry):
 
     def __init__(self, line):
         self.line = line
 
-class Tagging(object):
+class Tagging(Entry):
     
     def __init__(self, context, value):
         self.context = context
@@ -43,7 +48,7 @@ class Item(object):
 
     def __init__(self, entries, itemFileName = None):
         self.itemFileName = itemFileName
-        self.entries = []
+        self.entries = entries
 
     def findTaggingsByContext(self, context):
         pass
@@ -55,7 +60,7 @@ class Item(object):
         s = '['
 
         for e in self.entries:
-            s = s + e + '|'
+            s = s + str(e) + '|'
 
         s = s + ']'
 
