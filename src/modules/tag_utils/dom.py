@@ -46,8 +46,7 @@ class Tagging(Entry):
 
 class Item(object):
 
-    def __init__(self, entries = [], itemFileName = None):
-        self.itemFileName = itemFileName
+    def __init__(self, entries = []):
         self.entries = entries
 
     def findTaggingsByContext(self, context):

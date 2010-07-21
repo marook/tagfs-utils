@@ -64,7 +64,23 @@ class TestParseFile(unittest.TestCase):
         i = tag_io.parseFile(fileName)
 
         self.assertEqual(6, len(i.entries))
-        self.assertEqual(fileName, i.itemFileName)
+
+class TestWriteFile(unittest.TestCase):
+
+    def testWrite(self):
+        """Read and write item, test for equality
+        """
+
+        import filecmp
+
+        fileName1 = 'etc/test/tag1'
+        fileName2 = fileName1 + '.test'
+
+        i = tag_io.parseFile(fileName1)
+
+        tag_io.writeFile(i, fileName2)
+
+        self.assertTrue(filecmp.cmp(fileName1, fileName2))
 
 if __name__ == "__main__":
     unittest.main()

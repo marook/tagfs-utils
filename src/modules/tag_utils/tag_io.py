@@ -44,8 +44,16 @@ def parseFile(fileName):
 
     with open(fileName) as f:
         for line in f:
-            entry = parseLine(line)
+            s = line[0:len(line) - 1]
+
+            entry = parseLine(s)
                 
             entries.append(entry)
 
-    return dom.Item(entries, itemFileName = fileName)
+    return dom.Item(entries)
+
+def writeFile(item, fileName):
+    with open(fileName, 'w') as f:
+        for e in item.entries:
+            f.write(e.line)
+            f.write('\n')
