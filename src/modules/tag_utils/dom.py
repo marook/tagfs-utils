@@ -46,8 +46,8 @@ class Tagging(Entry):
 
 class Item(object):
 
-    def __init__(self, entries = []):
-        self.entries = entries
+    def __init__(self):
+        self.entries = []
 
     def findTaggingsByContext(self, context):
         pass

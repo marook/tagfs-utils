@@ -18,6 +18,7 @@
 # along with tagfs utils.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from tag_utils import dom
 from tag_utils import tag_io
 import unittest
 
@@ -62,6 +63,20 @@ class TestParseFile(unittest.TestCase):
         fileName = 'etc/test/tag1'
 
         i = tag_io.parseFile(fileName)
+
+        self.assertEqual(6, len(i.entries))
+
+class TestAppendEntriesFromFile(unittest.TestCase):
+
+    def testAppend(self):
+        """Appends entries from a tag file to an item
+        """
+
+        fileName = 'etc/test/tag1'
+        
+        i = dom.Item()
+
+        tag_io.appendEntriesFromFile(i, fileName)
 
         self.assertEqual(6, len(i.entries))
 
