@@ -21,9 +21,62 @@
 from tag_utils import dom
 import unittest
 
+class TestTagging(unittest.TestCase):
+    
+    def testTagging(self):
+        t = dom.Tagging('context', 'value')
+
+        self.assertTrue(t.tagging)
+
 class TestItem(unittest.TestCase):
 
     def testConstructor(self):
         i = dom.Item()
 
         self.assertEqual([], i.entries)
+
+    def testSetContextValueNone(self):
+        i = dom.Item()
+
+        i.setContextValue('context', 'value')
+
+        self.assertEqual(1, len(i.entries))
+        
+        e = i.entries[0]
+        self.assertEqual('context', e.context)
+        self.assertEqual('value', e.value)
+
+    def testSetContextValueReplace(self):
+        i = dom.Item()
+
+        i.entries.append(dom.Tagging('context', 'value'))
+
+        self.assertEqual(1, len(i.entries))
+        
+        i.setContextValue('context', 'value')
+
+        self.assertEqual(1, len(i.entries))
+        
+        e = i.entries[0]
+        self.assertEqual('context', e.context)
+        self.assertEqual('value', e.value)
+
+    def testSetContextValueDuplicate(self):
+        i = dom.Item()
+
+        i.entries.append(dom.Tagging('context', 'value'))
+        i.entries.append(dom.Tagging('context', 'value'))
+
+        self.assertEqual(2, len(i.entries))
+        
+        try:
+            i.setContextValue('context', 'value')
+        except dom.DuplicateContextError as e:
+            # that should be
+
+            self.assertEqual(2, len(i.entries))
+
+            return
+
+        # where's my exception!
+        self.fail()
