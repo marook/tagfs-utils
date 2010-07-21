@@ -17,6 +17,10 @@
 # along with tagfs utils.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+class ValueError(Exception):
+    
+    pass
+
 class DuplicateContextError(Exception):
 
     def __init__(self, context):
@@ -40,6 +44,9 @@ class Tagging(Entry):
         self.value = value
         self.tagging = True
 
+        if value is None:
+            raise ValueError()
+
     @property
     def line(self):
         s = ''
@@ -55,6 +62,19 @@ class Item(object):
 
     def __init__(self):
         self.entries = []
+
+    def appendTagging(self, context, value):
+        for e in self.entries:
+            if not e.tagging:
+                continue
+
+            if e.context != context or e.value != value:
+                continue
+
+            # abort, as tagging already exists
+            return
+
+        self.entries.append(Tagging(context, value))
 
     def setContextValue(self, context, value):
         entry = None

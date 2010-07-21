@@ -80,3 +80,21 @@ class TestItem(unittest.TestCase):
 
         # where's my exception!
         self.fail()
+
+    def testAppendTaggingNone(self):
+        i = dom.Item()
+
+        i.appendTagging('context', 'value')
+
+        self.assertEqual(1, len(i.entries))
+
+    def testAppendTaggingExists(self):
+        i = dom.Item()
+
+        i.entries.append(dom.Tagging('context', 'value'))
+
+        self.assertEqual(1, len(i.entries))
+
+        i.appendTagging('context', 'value')
+
+        self.assertEqual(1, len(i.entries))
