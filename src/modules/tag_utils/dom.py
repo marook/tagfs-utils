@@ -49,12 +49,6 @@ class Item(object):
     def __init__(self):
         self.entries = []
 
-    def findTaggingsByContext(self, context):
-        pass
-
-    def appendTagging(self, t):
-        self.entries.append(t)
-
     def __str__(self):
         s = '['
 
