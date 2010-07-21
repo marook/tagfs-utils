@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #
 # Copyright 2010 Markus Pielmeier
 #
@@ -17,35 +18,12 @@
 # along with tagfs utils.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import dom
-import re
+from tag_utils import dom
+import unittest
 
-COMMENT_LINE_MATCHER = re.compile('^[\s]*$')
+class TestItem(unittest.TestCase):
 
-def parseLine(line):
-    if COMMENT_LINE_MATCHER.match(line):
-        entry = dom.Comment(line)
-    else:
-        i = line.find(':')
+    def testConstructor(self):
+        i = dom.Item()
 
-        if i == -1:
-            context = None
-            value = line.strip()
-        else:
-            context = line[0:i].strip()
-            value = line[i + 1:len(line)].strip()
-
-        entry = dom.Tagging(context, value)
-
-    return entry
-
-def parseFile(fileName):
-    entries = []
-
-    with open(fileName) as f:
-        for line in f:
-            entry = parseLine(line)
-                
-            entries.append(entry)
-
-    return dom.Item(entries, itemFileName = fileName)
+        self.assertEqual([], i.entries)

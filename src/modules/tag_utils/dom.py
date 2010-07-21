@@ -46,7 +46,7 @@ class Tagging(Entry):
 
 class Item(object):
 
-    def __init__(self, entries, itemFileName = None):
+    def __init__(self, entries = [], itemFileName = None):
         self.itemFileName = itemFileName
         self.entries = entries
 
@@ -54,7 +54,7 @@ class Item(object):
         pass
 
     def appendTagging(self, t):
-        pass
+        self.entries.append(t)
 
     def __str__(self):
         s = '['
