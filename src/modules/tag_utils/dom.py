@@ -63,7 +63,7 @@ class Item(object):
             if not e.tagging:
                 continue
 
-            if not context is e.context:
+            if not context == e.context:
                 continue
 
             if not entry is None:
