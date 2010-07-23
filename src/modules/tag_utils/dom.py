@@ -37,6 +37,9 @@ class Comment(Entry):
         self.line = line
         self.tagging = False
 
+    def duplicateEntry(self, e):
+        return self is e
+
 class Tagging(Entry):
     
     def __init__(self, context, value):
@@ -58,10 +61,23 @@ class Tagging(Entry):
 
         return s
 
+    def duplicateEntry(self, e):
+        if not e.tagging:
+            return False
+
+        return ((self.context == e.context) and (self.value == e.value))
+
 class Item(object):
 
     def __init__(self):
         self.entries = []
+
+    def appendEntry(self, entry):
+        for e in self.entries:
+            if entry.duplicateEntry(e):
+                return
+
+        self.entries.append(entry)
 
     def appendTagging(self, context, value):
         for e in self.entries:

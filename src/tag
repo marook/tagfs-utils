@@ -19,7 +19,10 @@
 #
 
 import optparse
+import os
+import sys
 from tag_utils import dom
+from tag_utils import tag_io
 
 class AppendCommand(object):
 
@@ -29,6 +32,7 @@ class AppendCommand(object):
     def execute(self, item, args):
         tagging = args[0]
 
+        item.appendEntry(tag_io.parseLine(tagging))
 
         return 1
 
@@ -40,6 +44,9 @@ class SetCommand(object):
     def execute(self, item, args):
         tagging = args[0]
 
+        t = tag_io.parseLine(tagging)
+        
+        item.setContextValue(t.context, t.value)
 
         return 1
 
@@ -51,26 +58,49 @@ def addCommand(c):
 addCommand(AppendCommand())
 addCommand(SetCommand())
 
+def parseItem(path):
+    if os.path.isdir(path):
+        return tag_io.parseDirectory(path)
+
+    return tag_io.parseFile(path)
+
+def writeItem(path, item):
+    if os.path.isdir(path):
+        tagFileName = os.path.join(path, '.tag')
+    else:
+        tagFileName = path
+
+    tag_io.writeFile(item, tagFileName)
+
 def main():
+    usage = 'usage: %prog [options] target [commands]'
     parser = optparse.OptionParser()
     
     (options, args) = parser.parse_args()
 
-    target = args[0]
+    if len(args) == 0:
+        parser.print_help()
+
+        return 1
+
+    targetPath = args[0]
     commands = args[1:]
 
-    item = # TODO parse Item
+    item = parseItem(targetPath)
 
     i = 0
     while i < len(commands):
         cmd = commands[i]
+        i = i + 1
         
         c = COMMANDS[cmd]
 
         i = i + c.execute(item, commands[i:])
 
-    # TODO
-    pass
+    # TODO only write item when item is dirty
+    writeItem(targetPath, item)
+
+    return 0
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
