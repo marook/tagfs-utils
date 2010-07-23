@@ -97,5 +97,23 @@ class TestWriteFile(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(fileName1, fileName2))
 
+class TestParseDirectory(unittest.TestCase):
+
+    def testReadEmptyDir(self):
+        """Call parseDirectory method with empty directory
+        """
+
+        i = tag_io.parseDirectory('etc/test/empty')
+
+        self.assertEqual(0, len(i.entries))
+
+    def testReadTaggedDir(self):
+        """Call parseDirectory method with tagged directory
+        """
+
+        i = tag_io.parseDirectory('etc/test/tagged')
+
+        self.assertEqual(1, len(i.entries))
+
 if __name__ == "__main__":
     unittest.main()

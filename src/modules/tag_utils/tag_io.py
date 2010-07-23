@@ -18,6 +18,7 @@
 #
 
 import dom
+import os
 import re
 
 COMMENT_LINE_MATCHER = re.compile('^[\s]*$')
@@ -38,6 +39,21 @@ def parseLine(line):
         entry = dom.Tagging(context, value)
 
     return entry
+
+def parseDirectory(path, tagFileName = '.tag'):
+    """Parse taggings for a directory.
+
+    This method parses taggings which are applied to a directory. This is
+    done by looking into the directory for a tag file. If no tag file exists
+    within the directory, then an empty Item instance is returned.
+    """
+
+    tagFileName = os.path.join(path, tagFileName)
+
+    if os.path.exists(tagFileName):
+        return parseFile(tagFileName)
+    else:
+        return dom.Item()
 
 def parseFile(fileName):
     i = dom.Item()
