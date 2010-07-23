@@ -19,12 +19,55 @@
 #
 
 import optparse
-import re
+from tag_utils import dom
+
+class AppendCommand(object):
+
+    def __init__(self):
+        self.cmd = 'add'
+
+    def execute(self, item, args):
+        tagging = args[0]
+
+
+        return 1
+
+class SetCommand(object):
+
+    def __init__(self):
+        self.cmd = 'set';
+
+    def execute(self, item, args):
+        tagging = args[0]
+
+
+        return 1
+
+COMMANDS = {}
+
+def addCommand(c):
+    COMMANDS[c.cmd] = c
+
+addCommand(AppendCommand())
+addCommand(SetCommand())
 
 def main():
     parser = optparse.OptionParser()
     
     (options, args) = parser.parse_args()
+
+    target = args[0]
+    commands = args[1:]
+
+    item = # TODO parse Item
+
+    i = 0
+    while i < len(commands):
+        cmd = commands[i]
+        
+        c = COMMANDS[cmd]
+
+        i = i + c.execute(item, commands[i:])
 
     # TODO
     pass

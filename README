@@ -38,7 +38,10 @@ This section describes the tagfs utils applications.
 ---------------------------------------------------------------------
 Usage - tag
 
-The tag application is used to view and manage taggings.
+The tag application is used to view and manage taggings. It supports the
+following operations:
+
+$ tag dir add context:value set context2:value add value2
 
 TODO
 
