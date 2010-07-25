@@ -72,6 +72,10 @@ class Item(object):
     def __init__(self):
         self.entries = []
 
+    @property
+    def taggings(self):
+        return [e for e in self.entries if e.tagging]
+
     def appendEntry(self, entry):
         for e in self.entries:
             if entry.duplicateEntry(e):
@@ -91,6 +95,13 @@ class Item(object):
             return
 
         self.entries.append(Tagging(context, value))
+
+    def getContextValues(self, context):
+        for e in self.taggings:
+            if e.context != context:
+                continue
+
+            yield e.value
 
     def setContextValue(self, context, value):
         entry = None

@@ -50,6 +50,19 @@ class SetCommand(object):
 
         return 1
 
+class ReadCommand(object):
+    
+    def __init__(self):
+        self.cmd = 'read'
+
+    def execute(self, item, args):
+        context = args[0]
+
+        for value in item.getContextValues(context):
+            print value
+
+        return 1
+
 COMMANDS = {}
 
 def addCommand(c):
@@ -57,6 +70,7 @@ def addCommand(c):
 
 addCommand(AppendCommand())
 addCommand(SetCommand())
+addCommand(ReadCommand())
 
 def parseItem(path):
     if os.path.isdir(path):
