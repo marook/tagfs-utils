@@ -74,6 +74,8 @@ class ContextRenameCommand(object):
 
         item.renameContext(oldName, newName)
 
+        return 2
+
 COMMANDS = {}
 
 def addCommand(c):
