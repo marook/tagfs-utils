@@ -124,7 +124,13 @@ class Item(object):
             self.entries.append(entry)
         else:
             entry.value = value
-        
+
+    def renameContext(self, oldName, newName):
+        for t in self.taggings:
+            if t.context != oldName:
+                continue
+
+            t.context = newName
 
     def __str__(self):
         s = '['

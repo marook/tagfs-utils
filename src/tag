@@ -63,6 +63,17 @@ class ReadCommand(object):
 
         return 1
 
+class ContextRenameCommand(object):
+    
+    def __init__(self):
+        self.cmd = 'crename'
+
+    def execute(self, item, args):
+        oldName = args[0]
+        newName = args[1]
+
+        item.renameContext(oldName, newName)
+
 COMMANDS = {}
 
 def addCommand(c):
@@ -71,6 +82,7 @@ def addCommand(c):
 addCommand(AppendCommand())
 addCommand(SetCommand())
 addCommand(ReadCommand())
+addCommand(ContextRenameCommand())
 
 def parseItem(path):
     if os.path.isdir(path):

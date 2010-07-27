@@ -8,6 +8,7 @@ tagfs-utils - utilities for tagfs
 4.1.1) read Command
 4.1.2) append Command
 4.1.3) set Command
+4.1.4) crename Command
 5) Tests
 6) Contact
 
@@ -70,6 +71,13 @@ Usage - tag - set Command
 The set command is used to set a single context's value.
 
 TODO
+
+---------------------------------------------------------------------
+Usage - tag - crename Command
+
+The crename command is used to rename a context.
+
+$ tag [target directory] crename [old context name] [new context name]
 
 ---------------------------------------------------------------------
 Tests
