@@ -107,6 +107,14 @@ def main():
     if len(args) == 0:
         parser.print_help()
 
+        # TODO i should override OptionParser.print_help() but OptionParser
+        # doesen't seem to be a new style class
+        
+        print ''
+        print 'Supported commands:'
+        for c in COMMANDS.itervalues():
+            print '\t%s' % c.cmd
+
         return 1
 
     targetPath = args[0]
