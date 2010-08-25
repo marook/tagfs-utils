@@ -141,3 +141,8 @@ class Item(object):
         s = s + ']'
 
         return s
+
+class DB(object):
+
+    def __init__(self, items = []):
+        self.items = items

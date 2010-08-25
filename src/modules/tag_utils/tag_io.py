@@ -57,11 +57,27 @@ def parseDirectory(path, tagFileName = '.tag'):
 
 def parseFile(fileName):
     i = dom.Item()
+    i.fileName = fileName
 
     appendEntriesFromFile(i, fileName)
 
     return i
 
+
+def parseDatabaseDirectory(self, dirFileName, tagFileName):
+    """Appends the parsed items found in the target directory
+    """
+
+    db = dom.DB()
+
+    for itemName in os.listdir(dirFileName):
+        itemFileName = os.path.join(dirFileName, itemName)
+        item = parseDirectory(itemFileName, tagFileName)
+
+        db.items.append(item)
+
+    return db
+        
 
 def appendEntriesFromFile(item, fileName):
     with open(fileName) as f:
