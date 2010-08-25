@@ -32,6 +32,40 @@ class Question(object):
         pass
 
     @property
+    def refiningQuestions(self):
+        """Returns a list of questions which can refine the list of items.
+        """
+
+        # contains values of taggings with context == None
+        noContextTagging = set()
+        contexts = set()
+
+        for item in self.items:
+            for tagging in item.taggings:
+                if tagging.context == None:
+                    noContextTagging.add(tagging.value)
+                else:
+                    contexts.add(tagging.context)
+
+        rqs = []
+
+        for nct in noContextTagging:
+            # TODO prevent already filtered items from being added
+
+            q = TagQuestion(nct)
+
+            rqs.append(q)
+
+        for context in contexts:
+            # TODO prevent already filtered items from being added
+
+            q = ContextQuestion(context)
+
+            rqs.append(q)
+
+        return rqs
+
+    @property
     def nextQuestion(self):
         # TODO return next question
         pass
@@ -47,7 +81,7 @@ class TagQuestion(Question):
 
     @property
     def answers(self):
-        return ['yes', 'no']
+        return ['yes', 'no', 'None']
 
 class ContextQuestion(Question):
 
@@ -67,6 +101,16 @@ class ContextQuestion(Question):
     def answers(self):
         return self.questionText + ['None']
 
+class RootQuestion(Question):
+
+    def __init__(self, db):
+        self.db = db
+
+    @property
+    def items(self):
+        return db.items
+
 def findItem(db):
-    # TODO
-    pass
+    q = RootQuestion(db)
+
+    return q.nextQuestion
