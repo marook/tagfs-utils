@@ -21,15 +21,22 @@ class Question(object):
 
     def __init__(self, previousQuestion = None):
         self.previousQuestion = previousQuestion
-        self._answer = None
+        self._answers = None
 
     def answer(self, answers):
         self._answers = answers
 
     @property
+    def originalItems(self):
+        return previousQuestion.items
+
+    @property
     def items(self):
-        # TODO filter items
-        pass
+        for i in self.originalItems:
+            if not self.passesAnswer(i):
+                continue
+
+            yield i
 
     @property
     def refiningQuestions(self):
@@ -47,21 +54,20 @@ class Question(object):
                 else:
                     contexts.add(tagging.context)
 
-        rqs = []
-
         for nct in noContextTagging:
             # TODO prevent already filtered items from being added
 
-            q = TagQuestion(nct)
-
-            rqs.append(q)
+            yield TagQuestion(nct)
 
         for context in contexts:
             # TODO prevent already filtered items from being added
 
-            q = ContextQuestion(context)
+            yield ContextQuestion(context)
 
-            rqs.append(q)
+    @property
+    def priorizedRefiningQuestions(self):
+        rqs = [q for q in self.refiningQuestions]
+        rqs.sort(lambda q1, q2: cmp(-q1.priority, -q2.priority))
 
         return rqs
 
@@ -80,8 +86,25 @@ class TagQuestion(Question):
         return 'Is the item ' + self.taggingValue + '?'
 
     @property
+    def priority(self):
+        # TODO
+        pass
+
+    @property
     def answers(self):
-        return ['yes', 'no', 'None']
+        return ['yes', 'no']
+
+    def passesAnswer(self, item):
+        if self._answers == None or len(self._answers) == 2:
+            return True
+
+        if len(self._answers) == 0:
+            return False
+
+        answer = self._answers[0]
+
+        # TODO
+        pass
 
 class ContextQuestion(Question):
 
