@@ -102,7 +102,7 @@ class TagQuestion(Question):
 
     @property
     def priority(self):
-        items = self.originalItems
+        items = list(self.originalItems)
 
         allItemCount = len(items)
 
@@ -115,7 +115,7 @@ class TagQuestion(Question):
         return ['yes', 'no']
 
     def passesAnswer(self, item, answers):
-        if answers == None or len(answers) == 2:
+        if answers is None or len(answers) == 2:
             return True
 
         if len(answers) == 0:
@@ -123,7 +123,10 @@ class TagQuestion(Question):
 
         answer = answers[0]
 
-        return item.isTagged(answer)
+        if answer == 'yes':
+            return item.isTagged(self.taggingValue)
+        else:
+            return not item.isTagged(self.taggingValue)
 
 class ContextQuestion(Question):
 
