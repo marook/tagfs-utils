@@ -73,7 +73,7 @@ class Question(object):
 
     @property
     def priorizedRefiningQuestions(self):
-        rqs = [q for q in self.refiningQuestions]
+        rqs = list(self.refiningQuestions)
         rqs.sort(lambda q1, q2: cmp(-q1.priority, -q2.priority))
 
         return rqs
@@ -108,7 +108,7 @@ class TagQuestion(Question):
 
         matchItemCount = len(list(self.findItems(items, ['yes',])))
 
-        return 1 - abs(matchItemCount / allItemCount - 0.5)
+        return 1.0 - abs(matchItemCount / float(allItemCount) - 0.5) * 2.0
 
     @property
     def answers(self):
@@ -141,7 +141,7 @@ class ContextQuestion(Question):
     @property
     def priority(self):
         # TODO
-        return 0.5
+        return 0.1
 
     @property
     def contextValues(self):

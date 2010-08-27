@@ -119,12 +119,12 @@ class TestDecisionTree(unittest.TestCase):
         q = dt.findItem(db)
         self.validateQuestionInterface(q)
 
-        logging.debug('Question is %s' % q)
+        logging.debug('Question is %s(p=%s)' % (q, q.priority))
 
         self.answerQuestion(q, ['yes', ])
 
         logging.debug('Possible items: %s' % ', '.join([str(i) for i in q.items]))
-        logging.debug('Possible questions: %s' % ', '.join([str(q) for q in q.priorizedRefiningQuestions]))
+        logging.debug('Possible questions: %s' % ', '.join(['%s(p=%s)' % (str(q), str(q.priority)) for q in q.priorizedRefiningQuestions]))
 
         q2 = q.nextQuestion
         self.validateQuestionInterface(q2)
