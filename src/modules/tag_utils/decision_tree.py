@@ -127,12 +127,16 @@ class ContextQuestion(Question):
         
     @property
     def contextValues(self):
-        # TODO
-        return None
+        values = set()
+
+        for i in self.items:
+            values = values.union(frozenset(i.getContextValues(self.context)))
+
+        return values
 
     @property
     def answers(self):
-        return self.contextValues + ['None', ]
+        return list(self.contextValues) + ['None', ]
 
     def passesAnswer(self, item):
         if self._answers == None:

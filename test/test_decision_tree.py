@@ -56,16 +56,20 @@ class TestDecisionTree(unittest.TestCase):
 
         # TODO self.validateQuestionInterface(q)
 
-    def testGeneral(self):
-        """A general test case for the decision tree
+    def testSimpleContext(self):
+        """A simpe context test case for the decision tree
         """
 
         #import sys
         #sys.setrecursionlimit(100)
 
         db = dom.DB()
-        db.items.append(dom.Item([dom.Tagging('color', 'blue'), ]))
-        db.items.append(dom.Item([dom.Tagging('color', 'red'), ]))
+
+        i1 = dom.Item([dom.Tagging('color', 'blue'), ])
+        db.items.append(i1)
+
+        i2 = dom.Item([dom.Tagging('color', 'red'), ])
+        db.items.append(i2)
 
         q = dt.findItem(db)
 
@@ -85,7 +89,6 @@ class TestDecisionTree(unittest.TestCase):
 
         q.answer(['blue', ])
 
-        items = q.items
+        items = list(q.items)
         self.assertTrue(1, len(items))
- 
-        
+        self.assertTrue(i1 is items[0])
