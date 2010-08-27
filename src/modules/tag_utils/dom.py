@@ -98,6 +98,15 @@ class Item(object):
 
         self.entries.append(Tagging(context, value))
 
+    def isTagged(self, value):
+        for e in self.taggings:
+            if e.value != value:
+                continue
+
+            return True
+
+        return False
+
     def getContextValues(self, context):
         for e in self.taggings:
             if e.context != context:

@@ -30,13 +30,16 @@ class Question(object):
     def originalItems(self):
         return self.previousQuestion.items
 
-    @property
-    def items(self):
-        for i in self.originalItems:
-            if not self.passesAnswer(i):
+    def findItems(self, items, answers):
+        for i in items:
+            if not self.passesAnswer(i, answers):
                 continue
 
             yield i
+
+    @property
+    def items(self):
+        return self.findItems(self.originalItems, self._answers)
 
     @property
     def refiningQuestions(self):
@@ -96,24 +99,28 @@ class TagQuestion(Question):
 
     @property
     def priority(self):
-        # TODO
-        pass
+        items = self.originalItems
+
+        allItemCount = len(items)
+
+        matchItemCount = len(list(self.findItems(items, ['yes',])))
+
+        return 1 - abs(matchItemCount / allItemCount - 0.5)
 
     @property
     def answers(self):
         return ['yes', 'no']
 
-    def passesAnswer(self, item):
-        if self._answers == None or len(self._answers) == 2:
+    def passesAnswer(self, item, answers):
+        if answers == None or len(answers) == 2:
             return True
 
-        if len(self._answers) == 0:
+        if len(answers) == 0:
             return False
 
-        answer = self._answers[0]
+        answer = answers[0]
 
-        # TODO
-        pass
+        return item.isTagged(answer)
 
 class ContextQuestion(Question):
 
@@ -128,7 +135,7 @@ class ContextQuestion(Question):
     @property
     def priority(self):
         # TODO
-        pass
+        return 0.5
 
     @property
     def contextValues(self):
@@ -143,12 +150,12 @@ class ContextQuestion(Question):
     def answers(self):
         return list(self.contextValues) + ['None', ]
 
-    def passesAnswer(self, item):
-        if self._answers == None:
+    def passesAnswer(self, item, answers):
+        if answers == None:
             return True
 
         for v in item.getContextValues(self.context):
-            if v in self._answers:
+            if v in answers:
                 return True
 
         return False
