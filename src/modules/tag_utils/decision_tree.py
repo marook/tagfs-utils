@@ -144,8 +144,18 @@ class ContextQuestion(Question):
         
     @property
     def priority(self):
-        # TODO
-        return 0.1
+        items = list(self.originalItems)
+
+        allItemCount = float(len(items))
+
+        contextValues = self.contextValues
+        x = 0.0
+        for v in contextValues:
+            matchItemCount = len(list(self.findItems(items, [v,])))
+
+            x = abs(matchItemCount / allItemCount - 0.5)
+
+        return 1.0 - (x / float(len(contextValues))) * 2.0 - len(contextValues) / 5.0
 
     @property
     def contextValues(self):
