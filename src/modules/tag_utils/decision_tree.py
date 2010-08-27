@@ -126,6 +126,11 @@ class ContextQuestion(Question):
         return 'Which tag is valid for the context ' + self.context + '?'
         
     @property
+    def priority(self):
+        # TODO
+        pass
+
+    @property
     def contextValues(self):
         values = set()
 

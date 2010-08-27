@@ -92,3 +92,20 @@ class TestDecisionTree(unittest.TestCase):
         items = list(q.items)
         self.assertTrue(1, len(items))
         self.assertTrue(i1 is items[0])
+
+    def testMixedQuestions(self):
+        """Tests a decision tree with mixed questions
+        """
+
+        #import sys
+        #sys.setrecursionlimit(100)
+
+        db = dom.DB()
+        db.items.append(dom.Item([dom.Tagging('color', 'blue'), dom.Tagging(None, 'funny')]))
+        db.items.append(dom.Item([dom.Tagging('color', 'red'), dom.Tagging(None, 'funny')]))
+        db.items.append(dom.Item([dom.Tagging('color', 'red'), ]))
+        db.items.append(dom.Item([dom.Tagging('color', 'red'), ]))
+
+        q = dt.findItem(db)
+
+        self.validateQuestionInterface(q)
