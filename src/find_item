@@ -20,17 +20,29 @@
 
 import optparse
 import os
+import logging
 import sys
 from tag_utils import tag_io
 from tag_utils import decision_tree as dt
+from tag_utils import log_config
 
 def askQuestion(q):
+    print 'Still %s possible items' % len(list(q.items))
+
     print q.questionText
 
-    answers = q.answers
-    print ', '.join(['[' + str(i) + '] ' + answers[i] for i in range(len(answers))])
+    possibleAnswers = q.answers
+    print ', '.join(['[' + str(i) + '] ' + possibleAnswers[i] for i in range(len(possibleAnswers))])
 
-    # TODO read answer and apply answer to question
+    input = sys.stdin.readline()
+    
+    answers = []
+    for s in input.split():
+        answers.append(possibleAnswers[int(s)])
+
+    logging.debug('Answers are %s' % ', '.join(answers))
+
+    q.answer(answers)
 
 def main():
     usage = 'usage: %prog [item directory]'
@@ -49,10 +61,14 @@ def main():
 
     q = dt.findItem(db)
 
-    # TODO repeat
-    askQuestion(q)
+    while q != None:
+        askQuestion(q)
+
+        q = q.nextQuestion
 
     return 0
 
 if __name__ == '__main__':
+    log_config.setUpLogging()
+
     sys.exit(main())

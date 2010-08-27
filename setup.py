@@ -68,8 +68,12 @@ class test(Command):
         sys.path.insert(0, moddir)
         sys.path.insert(0, srcdir)
 
+        # configure logging
+        from tag_utils import log_config
+        log_config.setUpLogging()
+
         suite = TestLoader().loadTestsFromNames(tests)
-        TextTestRunner(verbosity=self._verbosity).run(suite)
+        TextTestRunner(verbosity = self._verbosity).run(suite)
 
 
 # Overrides default clean (which cleans from build runs)
