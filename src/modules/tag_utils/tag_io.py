@@ -23,6 +23,8 @@ import re
 
 COMMENT_LINE_MATCHER = re.compile('^[\s]*$')
 
+DEFAULT_TAG_FILE_NAME = '.tag'
+
 def parseLine(line):
     if COMMENT_LINE_MATCHER.match(line):
         entry = dom.Comment(line)
@@ -40,7 +42,7 @@ def parseLine(line):
 
     return entry
 
-def parseDirectory(path, tagFileName = '.tag'):
+def parseDirectory(path, tagFileName = DEFAULT_TAG_FILE_NAME):
     """Parse taggings for a directory.
 
     This method parses taggings which are applied to a directory. This is
@@ -64,7 +66,7 @@ def parseFile(fileName):
     return i
 
 
-def parseDatabaseDirectory(self, dirFileName, tagFileName):
+def parseDatabaseDirectory(dirFileName, tagFileName = DEFAULT_TAG_FILE_NAME):
     """Appends the parsed items found in the target directory
     """
 

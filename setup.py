@@ -126,7 +126,7 @@ setup(
     data_files = [
         (pjoin('share', 'doc', 'tagfs-utils'), ['AUTHORS', 'COPYING', 'README'])
     ],
-    scripts = [pjoin('src', 'tag')],
+    scripts = [pjoin('src', 'tag'), pjoin('src', 'find_item')],
     packages = ['tag_utils'],
     package_dir = {'': pjoin('src', 'modules')},
 )
