@@ -36,8 +36,9 @@ def setUpLogging():
         sys.exit(1)
 
     # configure file logger
+    # format = '%(asctime)s %(levelname)s %(message)s'
     logging.basicConfig(level = logging.DEBUG,
-                        format = '%(asctime)s %(levelname)s %(message)s')
+                        format = '%(levelname)s %(message)s')
     
     # replace default exception handler
     sys.excepthook = exceptionCallback
