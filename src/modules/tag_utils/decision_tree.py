@@ -87,6 +87,9 @@ class Question(object):
 
         return qs[0]
 
+    def __str__(self):
+        return '[q: ' + self.questionText + '; a: ' + ', '.join(self.answers) + ']'
+
 class TagQuestion(Question):
 
     def __init__(self, previousQuestion, taggingValue):

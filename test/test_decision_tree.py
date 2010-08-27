@@ -25,6 +25,12 @@ import logging
 
 class TestDecisionTree(unittest.TestCase):
 
+    def answerQuestion(self, q, answers):
+        for a in answers:
+            self.assertTrue(a in q.answers, msg = 'Can\'t find answer %s in %s' % (a, ', '.join(q.answers)))
+
+        q.answer(answers)
+
     def validateQuestionInterface(self, q):
         self.assertTrue(not q is None)
 
@@ -54,6 +60,8 @@ class TestDecisionTree(unittest.TestCase):
 
         q = dt.findItem(db)
 
+        logging.debug('Question is %s' % q)
+
         # TODO self.validateQuestionInterface(q)
 
     def testSimpleContext(self):
@@ -78,7 +86,7 @@ class TestDecisionTree(unittest.TestCase):
         self.assertEqual(2, len(list(q.items)))
         self.assertEqual(2, len(list(q.originalItems)))
 
-        logging.debug('Question text is %s' % q.questionText)
+        logging.debug('Question is %s' % q)
 
         a = list(q.answers)
         a.sort()
@@ -86,6 +94,8 @@ class TestDecisionTree(unittest.TestCase):
         self.assertEqual('None', a[0])
         self.assertEqual('blue', a[1])
         self.assertEqual('red', a[2])
+
+        self.answerQuestion(q, ['blue', ])
 
         q.answer(['blue', ])
 
@@ -107,5 +117,13 @@ class TestDecisionTree(unittest.TestCase):
         db.items.append(dom.Item([dom.Tagging('color', 'red'), ]))
 
         q = dt.findItem(db)
-
         self.validateQuestionInterface(q)
+
+        logging.debug('Question is %s' % q)
+
+        self.answerQuestion(q, ['yes', ])
+
+        q2 = q.nextQuestion
+        self.validateQuestionInterface(q2)
+
+        logging.debug('Question is %s' % q2)
