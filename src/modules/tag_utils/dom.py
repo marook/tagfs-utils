@@ -69,8 +69,10 @@ class Tagging(Entry):
 
 class Item(object):
 
-    def __init__(self):
-        self.entries = []
+    def __init__(self, entries = []):
+        # entries must be copied or all Items without default constructor get
+        # the same entries list instance
+        self.entries = list(entries)
 
     @property
     def taggings(self):
@@ -145,4 +147,6 @@ class Item(object):
 class DB(object):
 
     def __init__(self, items = []):
-        self.items = items
+        # items must be copied or all DBs without default constructor get
+        # the same items list instance
+        self.items = list(items)

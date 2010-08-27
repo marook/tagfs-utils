@@ -28,7 +28,7 @@ class Question(object):
 
     @property
     def originalItems(self):
-        return previousQuestion.items
+        return self.previousQuestion.items
 
     @property
     def items(self):
@@ -42,6 +42,10 @@ class Question(object):
     def refiningQuestions(self):
         """Returns a list of questions which can refine the list of items.
         """
+
+        if self._answers is None:
+            # prevent endless recursion
+            return
 
         # contains values of taggings with context == None
         noContextTagging = set()
@@ -57,12 +61,12 @@ class Question(object):
         for nct in noContextTagging:
             # TODO prevent already filtered items from being added
 
-            yield TagQuestion(nct)
+            yield TagQuestion(self, nct)
 
         for context in contexts:
             # TODO prevent already filtered items from being added
 
-            yield ContextQuestion(context)
+            yield ContextQuestion(self, context)
 
     @property
     def priorizedRefiningQuestions(self):
@@ -73,12 +77,17 @@ class Question(object):
 
     @property
     def nextQuestion(self):
-        # TODO return next question
-        pass
+        qs = self.priorizedRefiningQuestions
+
+        if len(qs) == 0:
+            return None
+
+        return qs[0]
 
 class TagQuestion(Question):
 
-    def __init__(self, taggingValue):
+    def __init__(self, previousQuestion, taggingValue):
+        super(TagQuestion, self).__init__(previousQuestion)
         self.taggingValue = taggingValue
 
     @property
@@ -108,7 +117,8 @@ class TagQuestion(Question):
 
 class ContextQuestion(Question):
 
-    def __init__(self, context):
+    def __init__(self, previousQuestion, context):
+        super(ContextQuestion, self).__init__(previousQuestion)
         self.context = context
 
     @property
@@ -118,20 +128,37 @@ class ContextQuestion(Question):
     @property
     def contextValues(self):
         # TODO
-        return []
+        return None
 
     @property
     def answers(self):
-        return self.questionText + ['None']
+        return self.contextValues + ['None', ]
+
+    def passesAnswer(self, item):
+        if self._answers == None:
+            return True
+
+        for v in item.getContextValues(self.context):
+            if v in self._answers:
+                return True
+
+        return False
 
 class RootQuestion(Question):
 
     def __init__(self, db):
+        super(RootQuestion, self).__init__()
         self.db = db
+
+        self.answer([])
+
+    @property
+    def originalItems(self):
+        return self.db.items
 
     @property
     def items(self):
-        return db.items
+        return self.originalItems
 
 def findItem(db):
     q = RootQuestion(db)
