@@ -98,3 +98,10 @@ class TestItem(unittest.TestCase):
         i.appendTagging('context', 'value')
 
         self.assertEqual(1, len(i.entries))
+
+    def testIsTagged(self):
+        i = dom.Item([dom.Tagging(None, 'tag1'), dom.Tagging(None, 'tag2'), ])
+
+        self.assertTrue(i.isTagged('tag1'))
+        self.assertTrue(i.isTagged('tag2'))
+        self.assertFalse(i.isTagged('tag3'))
