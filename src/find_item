@@ -25,7 +25,12 @@ from tag_utils import tag_io
 from tag_utils import decision_tree as dt
 
 def askQuestion(q):
-    pass
+    print q.questionText
+
+    answers = q.answers
+    print ', '.join(['[' + str(i) + '] ' + answers[i] for i in range(len(answers))])
+
+    # TODO read answer and apply answer to question
 
 def main():
     usage = 'usage: %prog [item directory]'
