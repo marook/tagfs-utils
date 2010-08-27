@@ -17,6 +17,8 @@
 # along with tagfs utils.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import logging
+
 class Question(object):
 
     def __init__(self, previousQuestion = None):
@@ -47,6 +49,8 @@ class Question(object):
         """
 
         if self._answers is None:
+            logging.debug('No refinements questions for %s as there are no answers specified yet' % self)
+
             # prevent endless recursion
             return
 
@@ -61,10 +65,10 @@ class Question(object):
                 else:
                     contexts.add(tagging.context)
 
-        for nct in noContextTagging:
+        for tagging in noContextTagging:
             # TODO prevent already filtered items from being added
 
-            yield TagQuestion(self, nct)
+            yield TagQuestion(self, tagging)
 
         for context in contexts:
             # TODO prevent already filtered items from being added

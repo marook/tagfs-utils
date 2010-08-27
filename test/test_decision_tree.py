@@ -116,17 +116,17 @@ class TestDecisionTree(unittest.TestCase):
         db.items.append(dom.Item([dom.Tagging('color', 'red'), ]))
         db.items.append(dom.Item([dom.Tagging('color', 'red'), ]))
 
-        q = dt.findItem(db)
-        self.validateQuestionInterface(q)
+        q1 = dt.findItem(db)
+        self.validateQuestionInterface(q1)
 
-        logging.debug('Question is %s(p=%s)' % (q, q.priority))
+        logging.debug('Question is %s(p=%s)' % (q1, q1.priority))
 
-        self.answerQuestion(q, ['yes', ])
+        self.answerQuestion(q1, ['yes', ])
 
-        logging.debug('Possible items: %s' % ', '.join([str(i) for i in q.items]))
-        logging.debug('Possible questions: %s' % ', '.join(['%s(p=%s)' % (str(q), str(q.priority)) for q in q.priorizedRefiningQuestions]))
+        logging.debug('Possible items: %s' % ', '.join([str(i) for i in q1.items]))
+        logging.debug('Possible questions: %s' % ', '.join([str(q) for q in q1.priorizedRefiningQuestions]))
 
-        q2 = q.nextQuestion
+        q2 = q1.nextQuestion
         self.validateQuestionInterface(q2)
 
         logging.debug('Question is %s' % q2)
