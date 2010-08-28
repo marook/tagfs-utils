@@ -18,6 +18,7 @@
 #
 
 import logging
+from cache import cache
 
 class Question(object):
 
@@ -29,6 +30,7 @@ class Question(object):
         self._answers = answers
 
     @property
+    @cache
     def originalItems(self):
         return self.previousQuestion.items
 
@@ -123,6 +125,7 @@ class TagQuestion(Question):
         return 'Is the item ' + self.taggingValue + '?'
 
     @property
+    @cache
     def priority(self):
         items = list(self.originalItems)
 
@@ -167,6 +170,7 @@ class ContextQuestion(Question):
         return 'Which tag is valid for the context ' + self.context + '?'
         
     @property
+    @cache
     def priority(self):
         items = list(self.originalItems)
 
@@ -182,6 +186,7 @@ class ContextQuestion(Question):
         return 1.0 - (x / float(len(contextValues))) * 2.0 - len(contextValues) / 5.0
 
     @property
+    @cache
     def contextValues(self):
         values = set()
 
@@ -191,6 +196,7 @@ class ContextQuestion(Question):
         return values
 
     @property
+    @cache
     def answers(self):
         return list(self.contextValues) + ['None', ]
 
