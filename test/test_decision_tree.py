@@ -123,6 +123,8 @@ class TestDecisionTree(unittest.TestCase):
 
         self.answerQuestion(q1, ['yes', ])
 
+        self.validateQuestionInterface(q1)
+
         logging.debug('Possible items: %s' % ', '.join([str(i) for i in q1.items]))
         logging.debug('Possible questions: %s' % ', '.join([str(q) for q in q1.priorizedRefiningQuestions]))
 
