@@ -66,14 +66,20 @@ class Question(object):
                     contexts.add(tagging.context)
 
         for tagging in noContextTagging:
-            # TODO prevent already filtered items from being added
+            q = TagQuestion(self, tagging)
 
-            yield TagQuestion(self, tagging)
+            if self.representsQuestion(q):
+                continue
+
+            yield q
 
         for context in contexts:
-            # TODO prevent already filtered items from being added
+            q = ContextQuestion(self, context)
 
-            yield ContextQuestion(self, context)
+            if self.representsQuestion(q):
+                continue
+
+            yield q
 
     @property
     def priorizedRefiningQuestions(self):
@@ -90,6 +96,18 @@ class Question(object):
             return None
 
         return qs[0]
+
+    def representsQuestion(self, q):
+        """Returns whether the supplied question is already represented by this question.
+        """
+
+        if self.equalQuestion(q):
+            return True
+
+        if not self.previousQuestion is None:
+            return self.previousQuestion.representsQuestion(q)
+
+        return False
 
     def __str__(self):
         return '[q: ' + self.questionText + '; a: ' + ', '.join(self.answers) + ']'
@@ -131,6 +149,12 @@ class TagQuestion(Question):
             return item.isTagged(self.taggingValue)
         else:
             return not item.isTagged(self.taggingValue)
+
+    def equalQuestion(self, q):
+        if not isinstance(q, TagQuestion):
+            return False
+
+        return self.taggingValue == q.taggingValue
 
 class ContextQuestion(Question):
 
@@ -180,6 +204,12 @@ class ContextQuestion(Question):
 
         return False
 
+    def equalQuestion(self, q):
+        if not isinstance(q, ContextQuestion):
+            return False
+
+        return self.context == q.context
+
 class RootQuestion(Question):
 
     def __init__(self, db):
@@ -195,6 +225,9 @@ class RootQuestion(Question):
     @property
     def items(self):
         return self.originalItems
+
+    def equalQuestion(self, q):
+        return isinstance(q, RootQuestion)
 
 def findItem(db):
     q = RootQuestion(db)
