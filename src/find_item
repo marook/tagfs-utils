@@ -27,7 +27,13 @@ from tag_utils import decision_tree as dt
 from tag_utils import log_config
 
 def askQuestion(q):
-    print 'Still %s possible items' % len(list(q.items))
+    items = list(q.items)
+    itemsCount = len(items)
+    print 'Still %s possible items' % itemsCount
+
+    if itemsCount < 5:
+        for i in items:
+            print ' * %s' % i.fileName
 
     print q.questionText
 
@@ -39,8 +45,6 @@ def askQuestion(q):
     answers = []
     for s in input.split():
         answers.append(possibleAnswers[int(s)])
-
-    logging.debug('Answers are %s' % ', '.join(answers))
 
     q.answer(answers)
 
@@ -60,11 +64,18 @@ def main():
     db = tag_io.parseDatabaseDirectory(itemDirectory)
 
     q = dt.findItem(db)
+    lq = q
 
     while q != None:
         askQuestion(q)
 
+        lq = q
+
         q = q.nextQuestion
+
+    print 'Resulting items are:'
+    for i in lq.items:
+        print ' * %s' % i.fileName
 
     return 0
 
