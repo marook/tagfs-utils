@@ -90,3 +90,56 @@ class Sheet(object):
                     e.append(v)
 
                 self.rows.append(e)
+
+class AbstractSheetToTagsMerge(object):
+    """Abstract base class for Sheet to tag merge classes.
+
+    Classes which extend this class need to fullfil the following requirements:
+    * self.colFormatters must be set to a list of formatters. There must be
+      a formatter in the list for every column in the merged Sheets.
+    * self.getTagFileName(self, row, sheet) must return a pathname for the
+      target tag file. the tag file should correspond to the supplied row and
+      sheet.
+    """
+
+    def __init__(self, defaultTagFileName = '.tag'):
+        self.defaultTagFileName = defaultTagFileName
+
+    def getTagFileName(self, row, sheet):
+        """Calculates a tag file name through a root dir and a tag file name.
+        """
+
+        return os.path.join(self.rootTagDir, self.getItemDirName(row, sheet), self.defaultTagFileName)
+
+    def postProcessItem(self, item, row, sheet):
+        pass
+
+    def mergeRowToTags(self, row, sheet):
+        tagFileName = self.getTagFileName(row, sheet)
+
+        tagDir, tagFileName2 = os.split(tagFileName)
+
+        if not os.path.exists(tagDir):
+            os.makedirs(tagDir)
+
+        item = dom.Item()
+        if os.path.exists(tagFileName):
+            tag_io.appendEntriesFromFile(item, tagFileName)
+
+        for i, f in enumerate(self.colFormatters):
+            s = f.format(row[i])
+
+            if len(s) == 0:
+                continue
+
+            item.setContextValue(f.context, s)
+
+        self.postProcessItem(item, row, sheet)
+
+        # TODO track changes to be able to skip writing
+        tag_io.writeFile(item, tagFileName)
+        
+
+    def mergeToTags(self, sheet):
+        for row in sheet.rows:
+            self.mergeRowToTags(row, sheet)
