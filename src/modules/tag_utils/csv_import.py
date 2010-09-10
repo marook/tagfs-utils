@@ -62,30 +62,31 @@ class Sheet(object):
     """
 
     def __init__(self):
-        self.entries = []
+        self.rows = []
 
-    def parseCSV(self, fileName, csvStartRow, colParsers):
+    def parseCSV(self, fileName, colParsers, csvStartRow = 0, delimiter = ';', quotechar = '"'):
         """Parses the rows from the target CSV file.
-
-        The csvStartRow defines the row index of the first parsed row.
 
         The parser intances are supplied through the colParsers parameter. The
         parser's index in the list must match the column index in the CSV
         table.
+
+        The csvStartRow defines the row index of the first parsed row.
         """
 
         import csv
 
         logging.debug('Parsing CSV %s' % fileName)
 
-        rows = [row for row in csv.reader(open(fileName), delimiter=';', quotechar='"')]
+        with open(fileName) as f:
+            rows = [row for row in csv.reader(f, delimiter = delimiter, quotechar = quotechar)]
 
-        for inRow in rows[csvStartRow:]:
-            e = []
+            for inRow in rows[csvStartRow:]:
+                e = []
 
-            for i, p in enumerate(config['parser']):
-                v = p.parse(inRow[i])
+                for i, p in enumerate(colParsers):
+                    v = p.parse(inRow[i])
 
-                e.append(v)
+                    e.append(v)
 
-            self.entries.append(e)
+                self.rows.append(e)
