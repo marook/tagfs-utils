@@ -130,7 +130,11 @@ setup(
     data_files = [
         (pjoin('share', 'doc', 'tagfs-utils'), ['AUTHORS', 'COPYING', 'README'])
     ],
-    scripts = [pjoin('src', 'tag'), pjoin('src', 'find_item')],
+    scripts = [
+        pjoin('src', 'tag'),
+        pjoin('src', 'find_item'),
+        pjoin('src', 'gmail_to_tags')
+        ],
     packages = ['tag_utils'],
     package_dir = {'': pjoin('src', 'modules')},
 )
