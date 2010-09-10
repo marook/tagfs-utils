@@ -112,6 +112,10 @@ class AbstractSheetToTagsMerge(object):
         return os.path.join(self.rootTagDir, self.getItemDirName(row, sheet), self.defaultTagFileName)
 
     def postProcessItem(self, item, row, sheet):
+        """Is called after a row is merged into an Item
+
+        Default behavior is to do nothing.
+        """
         pass
 
     def mergeRowToTags(self, row, sheet):
