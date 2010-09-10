@@ -17,6 +17,12 @@
 # along with tagfs utils.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import logging
+import os
+
+from tag_utils import dom
+from tag_utils import tag_io
+
 class PassThroughParser(object):
     """Parses which just passes the supplied valie through.
     """
@@ -91,7 +97,7 @@ class Sheet(object):
 
                 self.rows.append(e)
 
-class AbstractSheetToTagsMerge(object):
+class AbstractSheetToTagsMerger(object):
     """Abstract base class for Sheet to tag merge classes.
 
     Classes which extend this class need to fullfil the following requirements:
@@ -121,7 +127,7 @@ class AbstractSheetToTagsMerge(object):
     def mergeRowToTags(self, row, sheet):
         tagFileName = self.getTagFileName(row, sheet)
 
-        tagDir, tagFileName2 = os.split(tagFileName)
+        tagDir, tagFileName2 = os.path.split(tagFileName)
 
         if not os.path.exists(tagDir):
             os.makedirs(tagDir)
