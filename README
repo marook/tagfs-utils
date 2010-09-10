@@ -9,6 +9,7 @@ tagfs-utils - utilities for tagfs
 4.1.2) append Command
 4.1.3) set Command
 4.1.4) crename Command
+4.2) gmail_to_tags
 5) Tests
 6) Contact
 
@@ -78,6 +79,23 @@ Usage - tag - crename Command
 The crename command is used to rename a context.
 
 $ tag [target directory] crename [old context name] [new context name]
+
+---------------------------------------------------------------------
+Usage - gmail_to_tags
+
+First export your gmail contacts using the google CSV format. You can find a
+guide for doing this here:
+http://mail.google.com/support/bin/answer.py?answer=24911
+
+The downloaded contacts CSV file contains UTF-16 character encoding. Right now
+gmail_to_tags can't handle this. So you have to convert the contacts CSV file:
+
+$ iconv --from-code=utf-16 --to-code=utf-8 google.csv > google.utf8.csv
+
+Then you can convert the contacts CSV to a tagfs compatible directory:
+
+$ mkdir contacts
+$ gmail_to_tags -o contacts google.utf8.csv
 
 ---------------------------------------------------------------------
 Tests
