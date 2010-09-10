@@ -41,3 +41,7 @@ class TestDateTimeParser(AbstractTestParser):
         p = csv_import.DateTimeParser('%d.%m.%Y')
 
         self.assertEqual(datetime.strptime('2010-09-10', '%Y-%m-%d'), self.validateParserInterface(p, '10.09.2010'))
+
+# TODO write test case for PassThroughFormatter
+
+# TODO write test case for DateTimeFormatter
