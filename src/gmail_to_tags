@@ -103,7 +103,7 @@ class ContactsMerger(ci.AbstractSheetToTagsMerger):
         self.rootTagDir = contactsDir
 
     def getItemDirName(self, row, sheet):
-        return '%s - %s' % (row[0], row[3])
+        return row[0]
 
     def postProcessItem(self, item, row, sheet):
         item.appendTagging('src', 'gmail_to_tags')
