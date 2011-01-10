@@ -159,3 +159,29 @@ class DB(object):
         # items must be copied or all DBs without default constructor get
         # the same items list instance
         self.items = list(items)
+
+    @property
+    def contexts(self):
+        retunedContexts = set()
+
+        for i in self.items:
+            for t in i.taggings:
+                if t.context in retunedContexts:
+                    continue
+
+                retunedContexts.add(t.context)
+
+                yield t.context
+
+    @property
+    def values(self):
+        returnedValues = set()
+
+        for i in self.items:
+            for t in i.taggings:
+                if t.value in returnedValues:
+                    continue
+
+                returnedValues.add(t.value)
+
+                yield t.value
