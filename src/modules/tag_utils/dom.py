@@ -55,9 +55,9 @@ class Tagging(Entry):
         s = ''
 
         if self.context:
-            s = s + self.context + ': '
+            s = s + self.context.strip() + ': '
 
-        s = s + self.value
+        s = s + self.value.strip()
 
         return s
 
@@ -81,9 +81,11 @@ class Item(object):
     def appendEntry(self, entry):
         for e in self.entries:
             if entry.duplicateEntry(e):
-                return
+                return False
 
         self.entries.append(entry)
+
+        return True
 
     def appendTagging(self, context, value):
         for e in self.entries:
@@ -94,9 +96,11 @@ class Item(object):
                 continue
 
             # abort, as tagging already exists
-            return
+            return False
 
         self.entries.append(Tagging(context, value))
+
+        return True
 
     def isTagged(self, value):
         for e in self.taggings:
